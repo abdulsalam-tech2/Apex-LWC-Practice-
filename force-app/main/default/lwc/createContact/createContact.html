@@ -1,0 +1,52 @@
+<template>
+    <lightning-card title="Create Contact">
+        <div class="slds-p-around_small">
+            <lightning-button label="Create Contact" onclick={openModal} variant="brand"></lightning-button>
+        </div>
+    </lightning-card>
+
+    <template if:true={isModalOpen}>
+        <section role="dialog" tabindex="-1" aria-modal="true"
+                 class="slds-modal slds-fade-in-open">
+            <div class="slds-modal__container">
+                <header class="slds-modal__header slds-modal__header_empty">
+                    <lightning-button-icon icon-name="utility:close" alternative-text="close" onclick={closeModal} class="slds-modal__close"></lightning-button-icon>
+                    <h2 class="slds-text-heading_medium slds-p-left_small">New Contact</h2>
+                </header>
+                <div class="slds-modal__content slds-p-around_medium">
+                    <lightning-input label="First Name*" value={firstName} onchange={handleChange} data-id="firstName" required></lightning-input>
+                    <lightning-input label="Arabic First Name*" value={arabicFirstName} onchange={handleChange} data-id="arabicFirstName" required></lightning-input>
+                    <lightning-input label="Last Name*" value={lastName} onchange={handleChange} data-id="lastName" required></lightning-input>
+                    <lightning-input label="Arabic Last Name*" value={arabicLastName} onchange={handleChange} data-id="arabicLastName" required></lightning-input>
+                    <lightning-input type="email" label="Email (Only Email)" value={email} onchange={handleChange} data-id="email" required></lightning-input>
+                    <lightning-input label="Phone (Only UAE Number)" value={phone} onchange={handleChange} data-id="phone" required placeholder="+9715XXXXXXXX or 05XXXXXXXX"></lightning-input>
+
+                    <lightning-input label="Account Name" value={accountName} disabled></lightning-input>
+
+                    <lightning-combobox name="isEmiratesId" label="Is Emirates ID" value={isEmiratesId}
+                                        placeholder="Select" options={yesNoOptions}
+                                        onchange={handleEmiratesChange}></lightning-combobox>
+
+                    <div class="slds-m-top_small">
+                        <template if:true={createdContactId}>
+                            <p>Upload documents for created contact:</p>
+                            <lightning-file-upload label="Passport Document" record-id={createdContactId} multiple accept=".pdf,.png,.jpg,.jpeg"></lightning-file-upload>
+                            <template if:true={showEmiratesUpload}>
+                                <lightning-file-upload label="Emirates ID" record-id={createdContactId} multiple accept=".pdf,.png,.jpg,.jpeg"></lightning-file-upload>
+                            </template>
+                        </template>
+                    </div>
+
+                    <template if:true={errorMessage}>
+                        <div class="slds-m-top_small slds-text-color_error">{errorMessage}</div>
+                    </template>
+                </div>
+                <footer class="slds-modal__footer">
+                    <lightning-button variant="neutral" label="Cancel" onclick={closeModal}></lightning-button>
+                    <lightning-button variant="brand" label="Save" onclick={saveContact}></lightning-button>
+                </footer>
+            </div>
+        </section>
+        <div class="slds-backdrop slds-backdrop_open"></div>
+    </template>
+</template>
